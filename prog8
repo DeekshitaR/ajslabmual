@@ -1,99 +1,92 @@
 <!DOCTYPE html>
 <html>
-<title>USER MANAGEMENT APPLICATION</title>
+<title>Angular JS Login Form</title>
 <head>
 <script type="text/javascript"
 src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js">
 </script>
 <script>
-var app=angular.module("userMgmtApp",[]);
-app.controller("userMgmtAppCntrl",function($scope){
-$scope.users=[
-{'name':"Dr. Harish Kumar BT",
-'email':'harish.bitcse82@gmail.com','editing':false},
-{'name':'ABC','email':'abc@gmail.com','editing':false},
-{'name':'XYZ','email':'xyz@gmail.com','editing':false}
+var app=angular.module("loginApp",[]);
+app.controller('loginAppCntrl',function($scope){
+$scope.userName=''
+$scope.password=''
+$scope.noAttempts=0
+$scope.login=function(){
+// console.log("Inside login function")
+if($scope.userName=="harish" &&
 
-]
-$scope.createUser=function()
+$scope.password=="12345678")
+
 {
-if($scope.newUserName && $scope.newUserEmail)
-{
-var u={
-'name':$scope.newUserName,
-'email':$scope.newUserEmail,
-'editing':false
-}
-$scope.users.push(u)
-$scope.newUserName=''
-$scope.newUserEmail=''
+alert("Login Successfull")
 }
 else{
-alert("Please provide the user name and email id")
-}
-}
-$scope.readUser=function(user)
+$scope.noAttempts++
+if($scope.noAttempts<=3)
 {
-user.editing=true
-}
-$scope.updateUser=function(user){
+alert("Incorrect user name/password! Attempt No.
 
-user.editing=false
+"+$scope.noAttempts)
+}
+else{
+document.getElementById("loginButton").disabled=true
+}
+}
 }
 
-$scope.deleteUser=function(user)
-{
-var yes=confirm("Are you sure you want to delete")
-if(yes==true)
-{
-var index=$scope.users.indexOf(user)
-$scope.users.splice(index,1)
-}
-}
 });
 </script>
+<style>
+.error-message{
+color:red;
+font-size: 20px;
+}
+</style>
+
 </head>
-<body ng-app="userMgmtApp">
-<h1>USER MANAGEMENT APPLICATION</h1>
-<div ng-controller="userMgmtAppCntrl">
-Enter the User Name:<input type="text" ng-model="newUserName">
-Enther the User Email:<input type="text" ng-model="newUserEmail">
-<button ng-click="createUser()">Create</button>
+<body ng-app="loginApp" ng-controller="loginAppCntrl">
+<h1>Angular JS Login Form</h1>
+<form name="loginForm" ng-submit="submitForm()">
+Enter the User Name:<input type="text" name="userName"
+
+ng-model="userName" ng-minlength="5" ng-maxlength="8" required placeholder="Enter
+User Name">
+
+<span class="error-message"
+
+ng-show="loginForm.userName.$error.required && loginForm.userName.$dirty">User
+Name is Required</span>
+<span class="error-message"
+ng-show="loginForm.userName.$error.minlength">Minimum Length Must be 5</span>
+
+<span class="error-message"
+
+ng-show="loginForm.userName.$error.maxlength">Maximum user name length is limitted
+to 8</span>
 <br/>
 <br/>
-<table border="1">
-<tr>
-<th>SLNO</th>
-<th>NAME</th>
-<th>EMAIL</th>
-<th>READ</th>
-<th>UPDATE</th>
-<th>DELETE</th>
-</tr>
-<tr ng-repeat="user in users">
-<td>{{$index+1}}</td>
-<td>
+Enter the Password: <input type="password" name="password"
 
-<span
+ng-model="password" ng-minlength="5" ng-maxlength="8" required placeholder="Enter
+your password">
 
-ng-how="!user.editing">{{user.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp
-<input type="text" ng-show="user.editing" ng-model="user.name">
-</td>
-<td>
-<span ng-show="!user.editing">{{user.email}}</span>
-<input type="text" ng-show="user.editing" ng-model="user.email">
-</td>
-<td>
-<button ng-click="readUser(user)">Read</button>
-</td>
-<td>
-<button ng-click="updateUser(user)">Update</button>
-</td>
-<td>
-<button ng-click="deleteUser(user)">Delete</button>
-</td>
-</tr>
-</table>
-</div>
+<span class="error-message" ng-show="loginForm.password.$error.required
+
+&& loginForm.password.$dirty">Password is required</span>
+
+<span class="error-message"
+
+ng-show="loginForm.password.$error.minlength">Minimum Password length is 5</span>
+
+<span class="error-message"
+
+ng-show="loginForm.password.$error.maxlength">Maximum password length is limitted
+to 8</span>
+<br/>
+<br/>
+<button type="submit" ng-disabled="loginForm.$invalid"
+
+ng-click="login()" id="loginButton">Login</button>
+</form>
 </body>
 </html>
