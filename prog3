@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
+</script>
+<script>
+var app=angular.module('myapp',[]);
+app.controller('mycntrl',function($scope){
+$scope.num1=0
+$scope.num2=0
+$scope.result=0
+$scope.operator="+"
+$scope.compute=function(){
+switch($scope.operator){
+case '+':$scope.result=$scope.num1+$scope.num2
+break
+case '-':$scope.result=$scope.num1-$scope.num2
+break
+case '*':$scope.result=$scope.num1*$scope.num2
+break
+case '/':if($scope.num2==0){
+alert("Divide by zero error")
+}
+else
+{
+$scope.result=$scope.num1/$scope.num2
+}
+}
+}
+});
+</script>
+</head>
+<body ng-app="myapp">
+<div ng-controller="mycntrl">
+Enter the first number:<input type="text" ng-model="num1">
+select operator:<select ng-model="operator">
+<option value="+">+</option>
+<option value="-">-</option>
+<option value="*">*</option>
+<option value="/">/</option>
+</select>
+Enter the second number:<input type="text" ng-model="num2">
+<button ng-click="compute()">COMPUTE</button>
+<br>
+
+<b>{{num1+ " " +operator+ " " +num2+ "="+result}}</b>
+</div>
+</body>
+</html>
